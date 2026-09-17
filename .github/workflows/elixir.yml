@@ -1,0 +1,73 @@
+# SPDX-FileCopyrightText: 2026 Luke Galea
+# SPDX-License-Identifier: MIT
+
+# The checks the CI runs, written out. This repository is private: the shared
+# ash-project workflow cannot go green here (its code-scanning upload requires
+# GitHub Advanced Security), so the needed subset is declared directly.
+#
+# This package needs no database: the rule engine is pure computation, so there
+# is no Postgres service.
+
+name: Elixir CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  MIX_ENV: test
+
+jobs:
+  test:
+    name: mix test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.18"
+          otp-version: "28"
+      - run: mix deps.get
+      - run: mix test
+
+  compile:
+    name: MIX_ENV=test mix compile --warnings-as-errors
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.18"
+          otp-version: "28"
+      - run: mix deps.get
+      - run: mix compile --force --warnings-as-errors
+
+  format:
+    name: mix format --check-formatted
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.18"
+          otp-version: "28"
+      - run: mix deps.get
+      - run: mix format --check-formatted
+
+  credo:
+    name: mix credo --strict
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.18"
+          otp-version: "28"
+      - run: mix deps.get
+      - run: mix credo --strict
