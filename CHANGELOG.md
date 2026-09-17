@@ -14,6 +14,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 Nothing has been released yet. Everything below is the initial body of work.
 
+### Documentation:
+
+- README: the "how it fits" seam diagram, and screenshots from the reference
+  integration (findings with explanations, rule-set layers, the evaluation
+  audit trail), captured live from the `ash_enterprise` KYC demo.
+- `LICENSES/MIT.txt` added alongside the root `LICENSE`, matching the
+  first-party package convention; every documentation asset carries its
+  `.license` sidecar.
+
 ### Features:
 
 - Serializable rule IR (`AshRules.Ir`): rules, fact schemas and bundles as plain

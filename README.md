@@ -62,6 +62,43 @@ a violation, and never becomes a pass. Every compliance framework's ugliest
 failures start with a boolean somewhere deciding that "we don't know" means
 "fine".
 
+## How it fits
+
+AshRules owns the rule language and the evaluation. It does not own storage,
+events, or the compliance program around them — the packages downstream of it
+do:
+
+```
+        ┌─────────────────────────────────────────────────────┐
+        │  use AshRules                    (compile time)     │
+        │  rule set DSL ──verify──► immutable IR bundle       │
+        │                            SHA-256 content hash     │
+        └────────────────────────────┬────────────────────────┘
+                                     │  JSON in both directions
+                                     ▼
+        ┌─────────────────────────────────────────────────────┐
+        │  AshRules.evaluate(bundle, facts)    (runtime)      │
+        │                                                     │
+        │    Evaluator.Direct  ← default, zero deps           │
+        │    Evaluator.Wongi   ← optional Rete adapter        │
+        │         (same behaviour, same results)              │
+        │                                                     │
+        │  ⇒ Result: per-rule outcomes, provenance,           │
+        │    derived + missing facts, bundle hash             │
+        └────────────────────────────┬────────────────────────┘
+                                     │
+        ┌────────────────────────────▼────────────────────────┐
+        │  hosts and ash_compliance                           │
+        │  store the bundle as an approved artifact, project  │
+        │  results into findings, pin every decision to the   │
+        │  hash that produced it                              │
+        └─────────────────────────────────────────────────────┘
+```
+
+The seam is deliberate: everything above the line is rules-as-data, everything
+below decides what to do with the answers. Swap the evaluator without touching
+a rule; version a rule set without touching an evaluator.
+
 ## What ships
 
 * **Serializable rule IR** (`AshRules.Ir`) — rules, fact schemas, bundles as
@@ -100,6 +137,32 @@ An `AshRules.Result` per bundle evaluation:
 * **missing facts** — the absences the schema says must be surfaced;
 * the **overall outcome** under the bundle's combining algorithm, plus the
   bundle hash, both revisions, and the evaluation seed.
+
+## Rules as data, on screen
+
+The reference integration (customer KYC compliance, in `ash_enterprise`) runs
+these rules over a real event log and projects the results into findings. The
+screenshots are that integration, unmodified:
+
+![A findings table where missing evidence reads "cannot evaluate … missing customer/sanctions_cleared" — unknown, never compliant](documentation/assets/findings-explanations.png)
+
+Every row's explanation is the rule's own message or the missing-fact summary,
+projected at evaluation time. The outcome lattice is visible in the status
+column: *unknown* sits between compliant and noncompliant and never collapses
+into either.
+
+![Rule set revisions across the four layers, each with its lifecycle status and combining algorithm](documentation/assets/rule-set-layers.png)
+
+A rule set is a revision with a lifecycle (draft → validated → approved →
+active) and a layer that decides what may waive or replace it. The audit row
+below the two active baselines is revision 2 of the baseline, seeded as a
+draft: activating it is a reviewed act, not a deploy.
+
+![The evaluation log: one append-only row per decision, each pinning the bundle hash and the facts that were missing](documentation/assets/evaluation-provenance.png)
+
+Each evaluation records the bundle hash that produced it, the fact snapshot
+hash, and what was missing. Replay the same events and the evaluations are
+byte-identical — that is the acceptance bar, asserted by the test suite.
 
 ## Installation
 
