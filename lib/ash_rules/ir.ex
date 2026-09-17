@@ -57,6 +57,18 @@ defmodule AshRules.Ir do
   def decode(%{} = decoded), do: Bundle.from_json(decoded)
   def decode(_), do: {:error, "a bundle document must be JSON or a map"}
 
+  @doc "Like `decode/1`, but raises on invalid input."
+  @spec decode!(String.t() | map()) :: Bundle.t()
+  def decode!(json) do
+    case decode(json) do
+      {:ok, bundle} ->
+        bundle
+
+      {:error, errors} ->
+        raise ArgumentError, "invalid bundle: " <> (List.wrap(errors) |> Enum.join("; "))
+    end
+  end
+
   @doc """
   Strict value equality for fact and predicate values: `===` with no numeric
   type coercion.
