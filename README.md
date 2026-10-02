@@ -208,6 +208,8 @@ Issues and PRs at [github.com/lukegalea/ash_rules](https://github.com/lukegalea/
 `mix compile --warnings-as-errors`, `mix test`, `mix format --check-formatted`
 and `mix credo --strict` must pass; CI runs all four.
 
+Agents: read [AGENTS.md](AGENTS.md) before you change this repository. It links the agent constitution (`AGENT_PRINCIPLES.md`).
+
 ## License
 
 MIT.
