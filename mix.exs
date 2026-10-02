@@ -90,6 +90,7 @@ defmodule AshRules.MixProject do
         {"README.md", title: "Home"},
         "documentation/topics/rules-and-fact-schemas.md",
         "documentation/topics/evaluators.md",
+        "documentation/topics/standing-queries.md",
         "documentation/topics/what-it-refuses.md",
         "CHANGELOG.md"
       ],

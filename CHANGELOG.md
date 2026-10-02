@@ -25,6 +25,18 @@ Nothing has been released yet. Everything below is the initial body of work.
 
 ### Features:
 
+- Standing queries (`AshRules.Standings`, S1-55): membership-change events
+  over a watched set expression — `diff/2` yields one event per subject
+  whose three-valued verdict changed (`:entered`, `:left`,
+  `:became_unknown`, `:resolved_out`, each carrying its exact `from`/`to`),
+  `unknown` never folded into `in` or `out`; `query/3` derives the
+  expression's content-hashed identity; `dispatch/4` delivers the stream
+  through the one-callback `Standings.Dispatcher` behaviour hosts implement
+  (BPMN starts/signals and notifications as documented reference consumers);
+  `run/5` is the derive-diff-dispatch round trip, silent on empty diffs.
+- The standing-query diff property: against partitions the set-equivalence
+  properties already trust, the diff is exactly the per-subject partition
+  change, and applying the events reconstructs the after partition exactly.
 - Set evaluator (`AshRules.Evaluator.Set`, ADR 0048): IR predicates compiled
   into Ash queries over facts, partitioning subjects `in` / `out` / `unknown`
   — membership is three-valued, `unknown` never folds into either side.

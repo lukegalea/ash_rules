@@ -49,7 +49,10 @@ defmodule AshRules do
   compiles IR predicates into Ash queries over facts and partitions subjects
   into `in`, `out` and `unknown` (ADR 0048 — a judgment is a predicate over
   any set; the equivalence property test proves set membership equals the
-  per-subject outcome).
+  per-subject outcome). `AshRules.Standings` diffs those partitions into
+  membership-change events (`:entered` / `:left` / `:became_unknown`) and
+  hands them to a host dispatcher — the standing-query seam for BPMN starts,
+  signals and notifications.
   """
 
   use Spark.Dsl, default_extensions: [extensions: [AshRules.Dsl]]

@@ -138,6 +138,15 @@ two answers to one question: the property test runs randomly generated
 predicates and fact sets through both and asserts the partitions are equal,
 subject by subject.
 
+**Standing queries make a set expression reach out.** `AshRules.Standings`
+diffs the before and after partitions into per-subject membership-change
+events — `:entered`, `:left`, `:became_unknown`, `:resolved_out`, each
+carrying its exact three-valued transition (`unknown` is never folded into
+either side) — and delivers them through a one-callback behaviour the host
+implements: BPMN starts and signals, notifications, assess queues. Events
+derive from admitted facts only — scores order, facts decide. See
+[Standing queries](documentation/topics/standing-queries.md).
+
 ## How it fits
 
 AshRules owns the predicate vocabulary and the evaluation. It does not own
@@ -280,21 +289,25 @@ needs nothing beyond `ash`, `spark` and `jason`.
   the DSL, absence semantics, variables, metadata.
 - [Evaluators](documentation/topics/evaluators.md) — the behaviour, the two
   engines, the set evaluator, parity, equivalence and determinism contracts.
+- [Standing queries](documentation/topics/standing-queries.md) —
+  membership-change events, the transition table, the dispatcher behaviour,
+  and the BPMN / notifications reference consumers.
 - [What it refuses](documentation/topics/what-it-refuses.md) — the compile-time
   and admission-time refusals, verbatim.
 
 ## Status
 
-0.1.0. The IR, DSL, verifiers, all three evaluators and the combining
-algorithms are exercised by golden tests, full combining truth tables,
-determinism runs (n=50), StreamData properties over random fact sets, a
-direct-vs-Wongi parity corpus, and the set-equivalence property: for
-randomly generated predicates and fact sets — empty and single-fact sets
-included — set membership equals the direct evaluator's per-subject outcome,
-on the facts path and on the compiled-query resource path. The reference
-integration (customer KYC compliance) lives in `ash_enterprise`;
-`ash_compliance` builds its control plane and projector on this package's IR
-and evaluator behaviour.
+0.1.0. The IR, DSL, verifiers, all three evaluators, the standing-query
+event contract and the combining algorithms are exercised by golden tests,
+full combining truth tables, determinism runs (n=50), StreamData properties
+over random fact sets, a direct-vs-Wongi parity corpus, the set-equivalence
+property: for randomly generated predicates and fact sets — empty and
+single-fact sets included — set membership equals the direct evaluator's
+per-subject outcome, on the facts path and on the compiled-query resource
+path, and the standing-query diff property: the diff is exactly the
+per-subject partition change. The reference integration (customer KYC
+compliance) lives in `ash_enterprise`; `ash_compliance` builds its control
+plane and projector on this package's IR and evaluator behaviour.
 
 ## Contributing
 

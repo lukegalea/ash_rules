@@ -127,6 +127,16 @@ should have supplied the fact.
     `out`. Set equivalence with the per-subject evaluator is a property of the
     suite — if you change matching semantics, both change together and the
     property (`AshRules.SetMembershipPropertyTest`) is the arbiter.
+14. **Standing-query events are partition diffs, never verdicts.**
+    `AshRules.Standings.diff/2` yields one event per subject whose
+    three-valued verdict changed, and the transition table is the contract:
+    `:left` is `in → out` only (`in → unknown` is `:became_unknown`),
+    `:entered` is anything-to-`in`, and `unknown → out` is `:resolved_out` —
+    never silence, never a `:left` (the subject was never in). Events derive
+    from admitted facts only; dispatch is the host's job through
+    `Standings.Dispatcher`, one stream per diff with the expression's hash.
+    If you change the table, `AshRules.StandingsPropertyTest` and its
+    deterministic table tests change in the same commit.
 
 ## Guarding a host action (the reference pattern)
 
