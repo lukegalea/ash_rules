@@ -20,6 +20,13 @@ defmodule AshRules.Evaluator do
   Both must produce identical results on the same bundle and facts; the test
   suite runs every golden case and a property corpus through both when Wongi
   is available.
+
+  Alongside the behaviour sits `AshRules.Evaluator.Set` — the set evaluator of
+  ADR 0048. It answers a different question over the same IR predicates: not
+  "what is the outcome for this subject" but "which subjects are in, out,
+  unknown", by compiling the predicates into Ash queries over facts. Its
+  membership equals the per-subject outcome — the equivalence property test
+  pins that to the direct evaluator.
   """
 
   alias AshRules.Facts

@@ -109,6 +109,7 @@ defmodule AshRules.TestSupport.RuleSets.Property do
     fact(:p_b, :boolean, missing: :unknown)
     fact(:p_c, :integer, missing: :no_fact)
     fact(:p_d, :boolean, missing: false)
+    fact(:p_n, :number, missing: false)
     fact(:owner, :atom)
   end
 

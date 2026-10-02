@@ -7,9 +7,11 @@ defmodule AshRules.MixProject do
   @version "0.1.0"
 
   @description """
-  Compliance rules as data: a Spark DSL compiling to a serializable rule IR with a
-  content-hashed bundle, an outcome lattice with XACML-derived combining, a pure
-  direct evaluator, and an optional Wongi.Engine adapter behind one behaviour.
+  Predicates over sets (ADR 0048): a Spark DSL compiling declared questions to a
+  serializable, content-hashed rule IR, evaluated per subject, over a set
+  (compiled to Ash queries over facts: in / out / unknown), and incrementally
+  via an optional Rete adapter — one vocabulary, proven-equivalent evaluators,
+  and an outcome lattice where missing data is never a pass.
   """
 
   def project do

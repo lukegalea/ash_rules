@@ -25,6 +25,17 @@ Nothing has been released yet. Everything below is the initial body of work.
 
 ### Features:
 
+- Set evaluator (`AshRules.Evaluator.Set`, ADR 0048): IR predicates compiled
+  into Ash queries over facts, partitioning subjects `in` / `out` / `unknown`
+  — membership is three-valued, `unknown` never folds into either side.
+  Runs over in-memory fact triples or any fact resource exposing `subject`,
+  `predicate`, `value`; the compiled queries re-verify candidates with the
+  IR's strict equality, so set matching is exactly rule matching. Exposed as
+  `AshRules.membership/4` and `Set.compile/2` + `Set.membership/3`.
+- The equivalence property (`AshRules.SetMembershipPropertyTest`): for
+  randomly generated predicates and fact sets — empty and single-fact sets
+  included — set membership equals the direct evaluator's per-subject
+  outcome, on the facts path and on the compiled-query resource path.
 - Serializable rule IR (`AshRules.Ir`): rules, fact schemas and bundles as plain
   data with a validated JSON codec and a SHA-256 content hash over canonical
   JSON.

@@ -119,6 +119,14 @@ should have supplied the fact.
     stub returning `{:error, :wongi_not_available}` otherwise. Never call an
     engine module directly; go through `AshRules.evaluate/3`'s `:evaluator`
     option.
+13. **Sets read the same vocabulary, three-valued.** `AshRules.membership/4`
+    (or `AshRules.Evaluator.Set`) compiles IR predicates into Ash queries over
+    facts and partitions subjects `in` / `out` / `unknown` — ADR 0048. It
+    reads admitted facts only, never observations: scores order, facts decide.
+    `unknown` is its own partition and must never be folded into `in` or
+    `out`. Set equivalence with the per-subject evaluator is a property of the
+    suite — if you change matching semantics, both change together and the
+    property (`AshRules.SetMembershipPropertyTest`) is the arbiter.
 
 ## Guarding a host action (the reference pattern)
 
