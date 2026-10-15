@@ -19,9 +19,10 @@ set is a Spark DSL that compiles to an immutable, content-hashed bundle of
 serializable IR — no quoted AST, no `Code.eval`, nothing that can't be
 hashed, signed, shipped to a tenant control plane, decoded years later and
 evaluated identically. The same declared predicates evaluate per subject
-(rules, findings, explanations), over a set (filters, search, segments, bulk
-selection) and incrementally (Rete, for standing queries) — and the set
-evaluator is *proven equivalent* to the per-subject one by property test.
+(rules, findings, explanations) — directly or through an optional Rete
+engine — and over a set (filters, search, segments, bulk selection, standing
+queries), and the set evaluator is *proven equivalent* to the per-subject one
+by property test.
 Missing data is never a pass, and in a set it is never folded into `in` or
 `out` either.
 
@@ -125,7 +126,7 @@ on the first.
 |---|---|---|
 | Per-subject (`AshRules.Evaluator.Direct`) | "what is the outcome for this subject, and why" | rules, findings, explanations |
 | Set (`AshRules.Evaluator.Set`) | "which subjects are in, out, unknown" | filters, search, segments, bulk selection |
-| Incremental (`AshRules.Evaluator.Wongi`) | "whose membership just changed" | standing queries, alerts, process starts |
+| Per-subject, Rete (`AshRules.Evaluator.Wongi`, optional) | the same as Direct, with truth maintenance in a live engine (`engine/2`) | hosts that want incremental re-evaluation; parity with Direct is a test-suite contract |
 
 The set evaluator compiles IR predicates into Ash queries over facts — the
 queries narrow with the data layer's own equality (indexable, pushdownable)
@@ -281,7 +282,9 @@ your own deps to get the Rete adapter; without it, everything else works and
 `{:error, :wongi_not_available}`. `AshRules.Evaluator.Direct` — the default —
 needs nothing beyond `ash`, `spark` and `jason`.
 
-`mix igniter.install ash_rules` handles the formatter wiring.
+There is no Igniter installer task (no `Mix.Tasks.AshRules.Install`) and
+`.formatter.exs` exports no `locals_without_parens`, so formatter wiring for
+the DSL is the host's own.
 
 ## Documentation
 
