@@ -8,10 +8,11 @@ defmodule AshRules.MixProject do
 
   @description """
   Predicates over sets (ADR 0048): a Spark DSL compiling declared questions to a
-  serializable, content-hashed rule IR, evaluated per subject, over a set
-  (compiled to Ash queries over facts: in / out / unknown), and incrementally
-  via an optional Rete adapter — one vocabulary, proven-equivalent evaluators,
-  and an outcome lattice where missing data is never a pass.
+  serializable, content-hashed rule IR, evaluated per subject (directly or
+  through an optional Rete engine) and over a set (compiled to Ash queries over
+  facts: in / out / unknown, which also backs standing queries) — one
+  vocabulary, proven-equivalent evaluators, and an outcome lattice where
+  missing data is never a pass.
   """
 
   def project do

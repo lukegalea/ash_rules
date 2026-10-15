@@ -167,7 +167,7 @@ do:
         │                                                     │
         │  Evaluator.Direct  ← per subject (default)          │
         │  Evaluator.Set     ← over a set, Ash queries        │
-        │  Evaluator.Wongi   ← incrementally (optional Rete)  │
+        │  Evaluator.Wongi   ← per subject, Rete (optional)   │
         │    (equivalence pinned by property test)            │
         │                                                     │
         │  ⇒ Result: per-rule outcomes, provenance,           │
@@ -211,11 +211,15 @@ without touching a rule; version a rule set without touching an evaluator.
 * **Compile-time verification** — the Cedar pattern: validate before activate,
   never at evaluation. Tenant-authored rules enter as decoded IR and pass the
   identical checks.
-* **One evaluator behaviour, two engines** — `AshRules.Evaluator.Direct`
-  (pure Elixir, zero dependencies, deterministic by construction) and
-  `AshRules.Evaluator.Wongi` (compiles the IR to Wongi.Engine rules with full
-  truth maintenance). Both produce identical results on the same inputs; the
-  contract is enforced by the test suite, not by optimism.
+* **Three evaluators: one behaviour with two engines, and the set evaluator
+  beside it** — the `AshRules.Evaluator` behaviour has two per-subject
+  engines, `AshRules.Evaluator.Direct` (pure Elixir, zero dependencies,
+  deterministic by construction) and `AshRules.Evaluator.Wongi` (compiles the
+  IR to Wongi.Engine rules with full truth maintenance). Both produce
+  identical results on the same inputs; the contract is enforced by the test
+  suite, not by optimism. `AshRules.Evaluator.Set` does not implement the
+  behaviour: it answers set membership (in / out / unknown), and standing
+  queries are built on it.
 
 ## What evaluation produces
 
