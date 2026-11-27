@@ -1,0 +1,50 @@
+[
+  {
+    "law": "10",
+    "file": "lib/ash_rules/ir/fact.ex",
+    "text": "cardinality: String.to_atom(json[\"cardinality\"] || \"one\"),",
+    "reason": "Reviewed 2026-11-26, not fixed here. type, cardinality and missing are checked against closed sets before the atom is made; names and atom values are only checked to be strings, so a decoded bundle can still create atoms. Admission is a control-plane boundary (AshRules.IR.Fact.decode_value docs). Replacing these with an allow-list or String.to_existing_atom is a follow-up."
+  },
+  {
+    "law": "10",
+    "file": "lib/ash_rules/ir/fact.ex",
+    "text": "def decode_value(:atom, value) when is_binary(value), do: {:ok, String.to_atom(value)}",
+    "reason": "Reviewed 2026-11-26, not fixed here. type, cardinality and missing are checked against closed sets before the atom is made; names and atom values are only checked to be strings, so a decoded bundle can still create atoms. Admission is a control-plane boundary (AshRules.IR.Fact.decode_value docs). Replacing these with an allow-list or String.to_existing_atom is a follow-up."
+  },
+  {
+    "law": "10",
+    "file": "lib/ash_rules/ir/fact.ex",
+    "text": "missing: String.to_atom(json[\"missing\"] || \"false\"),",
+    "reason": "Reviewed 2026-11-26, not fixed here. type, cardinality and missing are checked against closed sets before the atom is made; names and atom values are only checked to be strings, so a decoded bundle can still create atoms. Admission is a control-plane boundary (AshRules.IR.Fact.decode_value docs). Replacing these with an allow-list or String.to_existing_atom is a follow-up."
+  },
+  {
+    "law": "10",
+    "file": "lib/ash_rules/ir/fact.ex",
+    "text": "name: String.to_atom(name),",
+    "reason": "Reviewed 2026-11-26, not fixed here. type, cardinality and missing are checked against closed sets before the atom is made; names and atom values are only checked to be strings, so a decoded bundle can still create atoms. Admission is a control-plane boundary (AshRules.IR.Fact.decode_value docs). Replacing these with an allow-list or String.to_existing_atom is a follow-up."
+  },
+  {
+    "law": "10",
+    "file": "lib/ash_rules/ir/fact.ex",
+    "text": "type: String.to_atom(type),",
+    "reason": "Reviewed 2026-11-26, not fixed here. type, cardinality and missing are checked against closed sets before the atom is made; names and atom values are only checked to be strings, so a decoded bundle can still create atoms. Admission is a control-plane boundary (AshRules.IR.Fact.decode_value docs). Replacing these with an allow-list or String.to_existing_atom is a follow-up."
+  },
+  {
+    "law": "10",
+    "file": "lib/ash_rules/ir/predicate.ex",
+    "text": "do: {:ok, Var.new(String.to_atom(name))}",
+    "reason": "Reviewed 2026-11-26, not fixed here. type, cardinality and missing are checked against closed sets before the atom is made; names and atom values are only checked to be strings, so a decoded bundle can still create atoms. Admission is a control-plane boundary (AshRules.IR.Fact.decode_value docs). Replacing these with an allow-list or String.to_existing_atom is a follow-up."
+  },
+  {
+    "law": "10",
+    "file": "lib/ash_rules/ir/predicate.ex",
+    "text": "name: String.to_atom(name),",
+    "reason": "Reviewed 2026-11-26, not fixed here. type, cardinality and missing are checked against closed sets before the atom is made; names and atom values are only checked to be strings, so a decoded bundle can still create atoms. Admission is a control-plane boundary (AshRules.IR.Fact.decode_value docs). Replacing these with an allow-list or String.to_existing_atom is a follow-up."
+  },
+  {
+    "law": "10",
+    "file": "lib/ash_rules/ir/predicate.ex",
+    "text": "{:ok, value} <- decode_value(v, fact_types[String.to_atom(name)]) do",
+    "reason": "Reviewed 2026-11-26, not fixed here. type, cardinality and missing are checked against closed sets before the atom is made; names and atom values are only checked to be strings, so a decoded bundle can still create atoms. Admission is a control-plane boundary (AshRules.IR.Fact.decode_value docs). Replacing these with an allow-list or String.to_existing_atom is a follow-up."
+  }
+]
