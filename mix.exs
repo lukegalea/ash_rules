@@ -78,6 +78,11 @@ defmodule AshRules.MixProject do
       {:stream_data, "~> 1.1"},
       {:simple_sat, "~> 0.1", only: [:dev, :test]},
       {:ex_doc, "~> 0.34", only: :dev, runtime: false},
+      # Dev-and-test-only: the laws judge (`mix ash_agent.laws`) and the Ash
+      # introspection tools. The hex package `files:` and runtime: false keep
+      # it out of consumers' graphs.
+      {:ash_agent_tools,
+       github: "lukegalea/ash_agent_tools", only: [:dev, :test], runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:igniter, "~> 0.6", only: [:dev, :test], runtime: false}
